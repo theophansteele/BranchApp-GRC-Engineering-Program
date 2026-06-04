@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Branch · Compliance as Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   Branch Compliance as Code Tracker
+   White · Clean · Branch brand
+   #185E38 dark green · #1BC47D mid green
+═══════════════════════════════════════════════ */
+:root {
+  --gd:    #185E38;   /* Branch dark green */
+  --gm:    #1BC47D;   /* Branch mid green */
+  --gl:    #ECFDF5;   /* Branch light green */
+  --gb:    #A7F3D0;   /* Branch green border */
+  --white: #FFFFFF;
+  --f9:    #F9FAFB;
+  --f4:    #F3F4F6;
+  --e5:    #E5E7EB;
+  --d1:    #D1D5DB;
+  --9c:    #9CA3AF;
+  --6b:    #6B7280;
+  --37:    #374151;
+  --11:    #111827;
+  --amber: #D97706;
+  --amb:   #FEF3C7;
+  --ambb:  #FCD34D;
+  --blue:  #2563EB;
+  --blub:  #EFF6FF;
+  --blubb: #BFDBFE;
+  --red:   #DC2626;
+  --redb:  #FEF2F2;
+  --redbb: #FECACA;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans:  'Plus Jakarta Sans', system-ui, sans-serif;
+  --mono:  'IBM Plex Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--11);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── TOP BAR ─────────────────────────────── */
+.topbar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--gd), var(--gm), var(--gm));
+}
+
+/* ── NAV ─────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--white);
+  border-bottom: 1px solid var(--e5);
+  padding: 0 2rem;
+  display: flex; align-items: center; gap: 1rem;
+  height: 56px;
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 0.5rem;
+  text-decoration: none;
+}
+
+.nav-logo-mark {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: var(--gd);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.nav-logo-mark svg { width: 16px; height: 16px; }
+
+.nav-wordmark {
+  font-weight: 800; font-size: 0.9rem;
+  color: var(--gd); letter-spacing: -0.01em;
+}
+
+.nav-divider {
+  width: 1px; height: 20px;
+  background: var(--e5); margin: 0 0.25rem;
+}
+
+.nav-title {
+  font-size: 0.8rem; font-weight: 600; color: var(--6b);
+}
+
+.nav-tabs {
+  display: flex; gap: 0; margin-left: auto;
+}
+
+.nav-tab {
+  font-size: 0.73rem; font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--6b); text-decoration: none;
+  padding: 0 1rem; height: 56px;
+  display: flex; align-items: center;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s; white-space: nowrap;
+}
+
+.nav-tab:hover { color: var(--gd); }
+.nav-tab.active { color: var(--gd); border-bottom-color: var(--gm); }
+
+.nav-right {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-left: 1rem;
+}
+
+.pill {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-size: 0.62rem; font-weight: 700;
+  font-family: var(--mono); letter-spacing: 0.08em;
+  text-transform: uppercase; border-radius: 100px;
+  padding: 0.25em 0.7em;
+}
+
+.pill-amber { background: var(--amb); color: var(--amber); border: 1px solid var(--ambb); }
+.pill-green { background: var(--gl); color: var(--gd); border: 1px solid var(--gb); }
+.pill-red   { background: var(--redb); color: var(--red); border: 1px solid var(--redbb); }
+.pill-blue  { background: var(--blub); color: var(--blue); border: 1px solid var(--blubb); }
+
+.blink { animation: blink 1.6s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* ── HERO ─────────────────────────────────── */
+.hero {
+  background: var(--white);
+  border-bottom: 1px solid var(--e5);
+  padding: 3.5rem 2rem 3rem;
+}
+
+.hero-inner {
+  max-width: 1160px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 340px; gap: 4rem; align-items: start;
+}
+
+.hero-kicker {
+  font-family: var(--mono); font-size: 0.62rem; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--gm); margin-bottom: 1rem;
+}
+
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1; color: var(--gd);
+  letter-spacing: -0.01em; margin-bottom: 1rem;
+}
+
+.hero-h1 em { font-style: italic; color: var(--gm); }
+
+.hero-p {
+  font-size: 0.9rem; color: var(--6b);
+  line-height: 1.75; max-width: 540px;
+  margin-bottom: 2rem;
+}
+
+.hero-stack {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+}
+
+.stack-chip {
+  font-size: 0.65rem; font-weight: 600;
+  font-family: var(--mono); letter-spacing: 0.06em;
+  background: var(--f4); border: 1px solid var(--d1);
+  color: var(--37); border-radius: 4px;
+  padding: 0.25em 0.65em;
+}
+
+/* Audit cycle widget */
+.audit-widget {
+  background: var(--white);
+  border: 1px solid var(--e5);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(24,94,56,0.06);
+}
+
+.aw-header {
+  background: var(--gd);
+  padding: 1.25rem 1.5rem;
+}
+
+.aw-header-label {
+  font-size: 0.58rem; font-weight: 700;
+  font-family: var(--mono); letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gm);
+  margin-bottom: 0.3rem;
+}
+
+.aw-header-title {
+  font-family: var(--serif); font-size: 1.2rem;
+  color: var(--white); line-height: 1.2;
+}
+
+.aw-cycle {
+  padding: 0;
+}
+
+.aw-row {
+  display: grid; grid-template-columns: 4px 1fr auto;
+  border-bottom: 1px solid var(--e5);
+  transition: background 0.15s;
+}
+
+.aw-row:last-child { border-bottom: none; }
+.aw-row:hover { background: var(--f9); }
+
+.aw-accent { width: 4px; }
+.aw-accent.active { background: var(--gm); }
+.aw-accent.next   { background: var(--blue); }
+.aw-accent.future { background: var(--d1); }
+
+.aw-body { padding: 1rem 1.25rem; }
+
+.aw-framework {
+  font-weight: 800; font-size: 0.88rem;
+  color: var(--11); margin-bottom: 0.15rem;
+}
+
+.aw-meta {
+  font-size: 0.68rem; color: var(--6b); line-height: 1.5;
+}
+
+.aw-status { padding: 1rem 1.25rem; display: flex; align-items: center; }
+
+.countdown-box {
+  text-align: center;
+}
+
+.countdown-n {
+  font-family: var(--mono); font-size: 1.5rem; font-weight: 600;
+  color: var(--gd); line-height: 1;
+}
+
+.countdown-u {
+  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--9c); font-family: var(--mono);
+}
+
+/* ── MAIN GRID ────────────────────────────── */
+.wrapper { max-width: 1160px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── SECTION ──────────────────────────────── */
+section { padding: 3rem 0; border-bottom: 1px solid var(--e5); }
+section:last-child { border-bottom: none; }
+
+.sh {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.sh-tag {
+  font-size: 0.55rem; font-weight: 700;
+  font-family: var(--mono); letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gm);
+  background: var(--gl); border: 1px solid var(--gb);
+  padding: 0.2em 0.6em; border-radius: 3px;
+}
+
+.sh-title {
+  font-family: var(--serif); font-size: 1.6rem;
+  color: var(--gd); letter-spacing: -0.01em;
+}
+
+.sh-title em { font-style: italic; color: var(--gm); }
+
+.s-desc {
+  font-size: 0.83rem; color: var(--6b);
+  line-height: 1.75; margin-bottom: 2rem;
+  max-width: 680px;
+}
+
+/* ── FRAMEWORK CARDS ──────────────────────── */
+.fw-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; margin-bottom: 2rem;
+}
+
+.fw-card {
+  background: var(--white);
+  border: 1px solid var(--e5); border-radius: 8px;
+  overflow: hidden; transition: box-shadow 0.2s;
+}
+
+.fw-card:hover {
+  box-shadow: 0 4px 20px rgba(24,94,56,0.08);
+}
+
+.fw-top {
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--e5);
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+
+.fw-name {
+  font-weight: 800; font-size: 1rem; color: var(--11);
+  margin-bottom: 0.2rem;
+}
+
+.fw-sub { font-size: 0.7rem; color: var(--6b); line-height: 1.4; }
+
+.fw-body { padding: 1.25rem; }
+
+.fw-progress-row {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 0.4rem;
+}
+
+.fw-progress-label { font-size: 0.68rem; font-weight: 600; color: var(--37); }
+.fw-progress-pct   { font-size: 0.68rem; font-weight: 700; color: var(--gd); font-family: var(--mono); }
+
+.fw-bar {
+  height: 6px; background: var(--f4);
+  border-radius: 3px; overflow: hidden; margin-bottom: 1rem;
+}
+
+.fw-bar-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--gd), var(--gm));
+  transition: width 1s ease;
+}
+
+.fw-bar-fill.blue { background: linear-gradient(90deg, #1d4ed8, #3b82f6); }
+.fw-bar-fill.gray { background: var(--d1); }
+
+.fw-meta-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.fw-meta-item { }
+.fw-meta-key {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--9c);
+  font-family: var(--mono); margin-bottom: 0.15rem;
+}
+
+.fw-meta-val {
+  font-size: 0.73rem; font-weight: 600; color: var(--11);
+}
+
+.fw-meta-val.amber { color: var(--amber); }
+.fw-meta-val.green { color: var(--gd); }
+.fw-meta-val.blue  { color: var(--blue); }
+
+/* ── ARCHITECTURE PIPELINE ────────────────── */
+.pipeline {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  position: relative; gap: 0; margin-bottom: 1.5rem;
+}
+
+.pipeline::before {
+  content: '';
+  position: absolute; top: 28px; left: 10%; right: 10%;
+  height: 2px; background: var(--e5); z-index: 0;
+}
+
+.pipe-stage {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 0 0.5rem 1.5rem;
+  position: relative; z-index: 1;
+  cursor: default;
+}
+
+.pipe-dot {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--white); border: 2px solid var(--e5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin-bottom: 0.75rem;
+  transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.pipe-stage:hover .pipe-dot {
+  border-color: var(--gm);
+  box-shadow: 0 4px 16px rgba(27,196,125,0.2);
+}
+
+.pipe-dot.active {
+  background: var(--gd); border-color: var(--gd);
+}
+
+.pipe-num {
+  font-size: 0.55rem; font-weight: 700; font-family: var(--mono);
+  letter-spacing: 0.1em; color: var(--9c); margin-bottom: 0.3rem;
+}
+
+.pipe-tool {
+  font-size: 0.62rem; font-weight: 700; font-family: var(--mono);
+  color: var(--gm); margin-bottom: 0.2rem; letter-spacing: 0.04em;
+}
+
+.pipe-title {
+  font-size: 0.78rem; font-weight: 700; color: var(--11);
+  line-height: 1.2; margin-bottom: 0.3rem;
+}
+
+.pipe-desc {
+  font-size: 0.68rem; color: var(--6b); line-height: 1.55;
+}
+
+.pipe-tags {
+  display: flex; flex-wrap: wrap; gap: 0.2rem;
+  justify-content: center; margin-top: 0.5rem;
+}
+
+.pt {
+  font-size: 0.54rem; font-weight: 700; font-family: var(--mono);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.15em 0.45em; border-radius: 2px;
+}
+
+.pt-g { background: var(--gl); color: var(--gd); }
+.pt-a { background: var(--amb); color: var(--amber); }
+.pt-b { background: var(--blub); color: var(--blue); }
+.pt-x { background: var(--f4); color: var(--6b); }
+
+/* ── SPRINT BOARD ─────────────────────────── */
+.sprint-cols {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.sprint-col { }
+
+.sprint-col-header {
+  padding: 0.75rem 1rem;
+  border-radius: 6px 6px 0 0;
+  margin-bottom: 0;
+  border: 1px solid var(--e5);
+  border-bottom: none;
+}
+
+.sprint-col-header.w1 { background: var(--redb);  border-color: var(--redbb); }
+.sprint-col-header.w2 { background: var(--amb);   border-color: var(--ambb); }
+.sprint-col-header.w3 { background: var(--blub);  border-color: var(--blubb); }
+.sprint-col-header.w4 { background: var(--gl);    border-color: var(--gb); }
+
+.sprint-col-title {
+  font-size: 0.7rem; font-weight: 800; letter-spacing: 0.04em;
+}
+
+.sprint-col-header.w1 .sprint-col-title { color: var(--red); }
+.sprint-col-header.w2 .sprint-col-title { color: var(--amber); }
+.sprint-col-header.w3 .sprint-col-title { color: var(--blue); }
+.sprint-col-header.w4 .sprint-col-title { color: var(--gd); }
+
+.sprint-col-dates {
+  font-size: 0.6rem; color: inherit; opacity: 0.7;
+  font-family: var(--mono); margin-top: 0.1rem;
+}
+
+.sprint-tasks {
+  border: 1px solid var(--e5);
+  border-radius: 0 0 6px 6px;
+  background: var(--white);
+  overflow: hidden;
+}
+
+.stask {
+  display: flex; gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--f4);
+  cursor: pointer; transition: background 0.12s;
+  align-items: flex-start;
+}
+
+.stask:last-child { border-bottom: none; }
+.stask:hover { background: var(--f9); }
+.stask.done { background: var(--gl); }
+
+.stask-cb {
+  width: 15px; height: 15px; border-radius: 3px;
+  border: 1.5px solid var(--d1);
+  flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.55rem; transition: all 0.15s;
+}
+
+.stask.done .stask-cb {
+  background: var(--gm); border-color: var(--gm); color: var(--white);
+}
+
+.stask-body { flex: 1; min-width: 0; }
+
+.stask-title {
+  font-size: 0.75rem; font-weight: 600; color: var(--11);
+  line-height: 1.3; margin-bottom: 0.15rem;
+}
+
+.stask.done .stask-title {
+  color: var(--6b); text-decoration: line-through;
+}
+
+.stask-sub {
+  font-size: 0.65rem; color: var(--9c); line-height: 1.4;
+}
+
+.stask-tag {
+  font-size: 0.52rem; font-weight: 700; font-family: var(--mono);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.12em 0.4em; border-radius: 2px; margin-top: 0.3rem;
+  display: inline-block;
+}
+
+.tag-drata   { background: var(--blub); color: var(--blue); }
+.tag-rego    { background: var(--amb); color: var(--amber); }
+.tag-tf      { background: #f3e8ff; color: #7c3aed; }
+.tag-ai      { background: var(--gl); color: var(--gd); }
+.tag-gh      { background: var(--f4); color: var(--37); }
+.tag-sb      { background: #fef3c7; color: #92400e; }
+
+/* ── COVERAGE TABLE ───────────────────────── */
+.ctable {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.75rem; border: 1px solid var(--e5);
+  border-radius: 8px; overflow: hidden;
+}
+
+.ctable thead tr { background: var(--gd); }
+
+.ctable th {
+  padding: 0.7rem 1rem; text-align: left;
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.8); font-family: var(--mono);
+}
+
+.ctable td {
+  padding: 0.75rem 1rem; border-bottom: 1px solid var(--f4);
+  vertical-align: middle;
+}
+
+.ctable tr:last-child td { border-bottom: none; }
+.ctable tr:hover td { background: var(--f9); }
+
+.ctable .cn { font-weight: 700; color: var(--11); }
+.ctable .cd { font-size: 0.67rem; color: var(--9c); display: block; margin-top: 0.1rem; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 0.2rem;
+  font-size: 0.58rem; font-weight: 700; font-family: var(--mono);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.2em 0.5em; border-radius: 3px; white-space: nowrap;
+}
+
+.chip-auto    { background: var(--gl);  color: var(--gd);   border: 1px solid var(--gb); }
+.chip-partial { background: var(--amb); color: var(--amber); border: 1px solid var(--ambb); }
+.chip-manual  { background: var(--redb);color: var(--red);   border: 1px solid var(--redbb); }
+
+/* ── REPO MAP ─────────────────────────────── */
+.repo-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.repo-card {
+  background: var(--white);
+  border: 1px solid var(--e5);
+  border-radius: 8px; padding: 1.25rem;
+  border-left: 3px solid var(--e5);
+  transition: all 0.2s;
+  text-decoration: none; color: inherit;
+  display: block;
+}
+
+.repo-card:hover {
+  border-left-color: var(--gm);
+  box-shadow: 0 4px 16px rgba(24,94,56,0.07);
+  transform: translateY(-1px);
+}
+
+.repo-card-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+
+.repo-card-path {
+  font-family: var(--mono); font-size: 0.72rem; font-weight: 600;
+  color: var(--gm); margin-bottom: 0.3rem;
+}
+
+.repo-card-title {
+  font-size: 0.88rem; font-weight: 800; color: var(--11);
+  margin-bottom: 0.4rem;
+}
+
+.repo-card-desc {
+  font-size: 0.73rem; color: var(--6b); line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.repo-card-files {
+  list-style: none; display: flex; flex-direction: column; gap: 0.2rem;
+}
+
+.repo-card-files li {
+  font-size: 0.65rem; font-family: var(--mono);
+  color: var(--9c); padding-left: 0.75rem; position: relative;
+}
+
+.repo-card-files li::before {
+  content: '─'; position: absolute; left: 0;
+  color: var(--d1);
+}
+
+/* ── HITL CARDS ───────────────────────────── */
+.hitl-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+}
+
+.hitl-card {
+  background: var(--white); border: 1px solid var(--e5);
+  border-radius: 6px; padding: 1.25rem;
+  border-top: 3px solid var(--d1);
+}
+
+.hitl-card.crit  { border-top-color: var(--red); }
+.hitl-card.rev   { border-top-color: var(--amber); }
+.hitl-card.auto  { border-top-color: var(--gm); }
+
+.hitl-badge {
+  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; font-family: var(--mono);
+  margin-bottom: 0.5rem; display: inline-block;
+}
+
+.crit .hitl-badge  { color: var(--red); }
+.rev .hitl-badge   { color: var(--amber); }
+.auto .hitl-badge  { color: var(--gd); }
+
+.hitl-title {
+  font-size: 0.83rem; font-weight: 700; color: var(--11);
+  margin-bottom: 0.35rem; line-height: 1.2;
+}
+
+.hitl-desc {
+  font-size: 0.72rem; color: var(--6b); line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.hitl-owner {
+  font-size: 0.62rem; font-family: var(--mono);
+  color: var(--9c);
+}
+
+.hitl-owner strong { color: var(--37); }
+
+/* ── CALLOUT ──────────────────────────────── */
+.callout {
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  padding: 1rem 1.25rem; border-radius: 6px;
+  font-size: 0.8rem; line-height: 1.7;
+  margin: 1rem 0; border: 1px solid;
+}
+
+.callout-icon { font-size: 1rem; flex-shrink: 0; }
+.callout strong { font-weight: 700; display: block; margin-bottom: 0.15rem; }
+
+.callout.warn { background: var(--amb); border-color: var(--ambb); color: #78350f; }
+.callout.info { background: var(--blub); border-color: var(--blubb); color: #1e3a8a; }
+.callout.ok   { background: var(--gl); border-color: var(--gb); color: var(--gd); }
+.callout.urgent { background: var(--redb); border-color: var(--redbb); color: #7f1d1d; }
+
+/* ── FOOTER ───────────────────────────────── */
+.footer {
+  background: var(--gd); padding: 1.75rem 2rem;
+  border-top: 3px solid var(--gm);
+  display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+}
+
+.footer-left {
+  font-size: 0.7rem; color: rgba(255,255,255,0.6); line-height: 1.8;
+}
+
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-size: 0.7rem; color: rgba(255,255,255,0.6);
+  text-decoration: none; transition: color 0.15s;
+}
+.footer-links a:hover { color: var(--gm); }
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 1024px) {
+  .fw-grid       { grid-template-columns: 1fr 1fr; }
+  .repo-grid     { grid-template-columns: 1fr 1fr; }
+  .hitl-grid     { grid-template-columns: 1fr 1fr; }
+  .sprint-cols   { grid-template-columns: 1fr 1fr; }
+  .pipeline      { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .hero-inner    { grid-template-columns: 1fr; }
+  .fw-grid       { grid-template-columns: 1fr; }
+  .repo-grid     { grid-template-columns: 1fr; }
+  .hitl-grid     { grid-template-columns: 1fr; }
+  .sprint-cols   { grid-template-columns: 1fr; }
+  .pipeline      { grid-template-columns: 1fr 1fr; }
+  .nav-tabs      { display: none; }
+  .wrapper       { padding: 0 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<!-- ── NAV ──────────────────────────────── -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" fill="#1BC47D"/>
+      </svg>
+    </div>
+    <span class="nav-wordmark">Branch</span>
+  </a>
+  <div class="nav-divider"></div>
+  <span class="nav-title">Compliance as Code</span>
+
+  <div class="nav-tabs">
+    <a class="nav-tab active" href="#frameworks">Frameworks</a>
+    <a class="nav-tab" href="#architecture">Architecture</a>
+    <a class="nav-tab" href="#sprint">Sprint</a>
+    <a class="nav-tab" href="#coverage">Coverage</a>
+    <a class="nav-tab" href="#repo">Repo</a>
+    <a class="nav-tab" href="#hitl">HITL Gates</a>
+  </div>
+
+  <div class="nav-right">
+    <span class="pill pill-amber"><span class="blink" style="display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;"></span> SOC2 Active</span>
+    <a class="nav-tab" href="index.html" style="font-size:0.7rem; color:var(--6b); padding:0 0.5rem;">← Dashboard</a>
+  </div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────── -->
+<div class="hero">
+  <div class="hero-inner wrapper" style="max-width:1160px;">
+    <div>
+      <div class="hero-kicker">Branch App · GRC Engineering Programme</div>
+      <h1 class="hero-h1">Compliance as Code<br><em>Starts Now</em></h1>
+      <p class="hero-p">Branch holds SOC 2 Type 2, ISO 27001:2022, PCI DSS v4.0, and CCPA — all currently driven by manual evidence collection. This programme uses Drata Enterprise + SafeBase + Terraform + OPA/Rego + AI Agents to automate the full audit lifecycle, guided by the GRC Engineering Manifesto.</p>
+      <div class="hero-stack">
+        <span class="stack-chip">Drata Enterprise</span>
+        <span class="stack-chip">SafeBase Trust Center</span>
+        <span class="stack-chip">Terraform</span>
+        <span class="stack-chip">OPA / Rego</span>
+        <span class="stack-chip">AI Agents + MCP</span>
+        <span class="stack-chip">Human-in-the-Loop</span>
+        <span class="stack-chip">GRC Engineering Club</span>
+      </div>
+    </div>
+
+    <div class="audit-widget">
+      <div class="aw-header">
+        <div class="aw-header-label">Audit Cycle · 2026–2027</div>
+        <div class="aw-header-title">Three frameworks. One automated programme.</div>
+      </div>
+      <div class="aw-cycle">
+        <div class="aw-row">
+          <div class="aw-accent active"></div>
+          <div class="aw-body">
+            <div class="aw-framework">SOC 2 Type 2</div>
+            <div class="aw-meta">Auditors: 360 Advanced · Wipfli<br>Evidence: Manual → automating</div>
+          </div>
+          <div class="aw-status">
+            <div class="countdown-box">
+              <div class="countdown-n" id="days-soc2">26</div>
+              <div class="countdown-u">days left</div>
+            </div>
+          </div>
+        </div>
+        <div class="aw-row">
+          <div class="aw-accent next"></div>
+          <div class="aw-body">
+            <div class="aw-framework">ISO 27001:2022</div>
+            <div class="aw-meta">Cert valid Dec 2028 · Surveillance Q3–Q4</div>
+          </div>
+          <div class="aw-status">
+            <span class="pill pill-blue">Up Next</span>
+          </div>
+        </div>
+        <div class="aw-row">
+          <div class="aw-accent future"></div>
+          <div class="aw-body">
+            <div class="aw-framework">PCI DSS v4.0</div>
+            <div class="aw-meta">QSA · Q1–Q2 2027 · CDE defined</div>
+          </div>
+          <div class="aw-status">
+            <span class="pill" style="background:var(--f4);color:var(--6b);border:1px solid var(--e5)">Planning</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <!-- ── 01 FRAMEWORKS ─────────────────── -->
+  <section id="frameworks">
+    <div class="sh">
+      <span class="sh-tag">01</span>
+      <h2 class="sh-title">Framework <em>Status</em></h2>
+    </div>
+    <p class="s-desc">Current automation coverage per framework. Target is 85%+ automated before each audit window — reducing manual evidence pull from weeks to hours.</p>
+
+    <div class="callout urgent">
+      <span class="callout-icon">🚨</span>
+      <div>
+        <strong>June 2026 — SOC 2 Type 2 Evidence Window is Open</strong>
+        All evidence is currently being pulled manually. The June sprint automates the foundation so ISO 27001 and PCI are nearly fully automated. Auditors (360 Advanced, Wipfli) are active.
+      </div>
+    </div>
+
+    <div class="fw-grid">
+      <div class="fw-card">
+        <div class="fw-top">
+          <div>
+            <div class="fw-name">SOC 2 Type 2</div>
+            <div class="fw-sub">AICPA Trust Services Criteria<br>Security · Availability · Confidentiality</div>
+          </div>
+          <span class="pill pill-amber"><span class="blink" style="display:inline-block;width:4px;height:4px;border-radius:50%;background:currentColor;margin-right:2px;"></span>Active</span>
+        </div>
+        <div class="fw-body">
+          <div class="fw-progress-row">
+            <span class="fw-progress-label">Automation Coverage</span>
+            <span class="fw-progress-pct">35% → 85%</span>
+          </div>
+          <div class="fw-bar"><div class="fw-bar-fill" style="width:35%"></div></div>
+          <div class="fw-meta-grid">
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Window</div>
+              <div class="fw-meta-val amber">June 2026</div>
+            </div>
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Auditors</div>
+              <div class="fw-meta-val">360 Advanced · Wipfli</div>
+            </div>
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Drata CaC</div>
+              <div class="fw-meta-val amber">Configuring</div>
+            </div>
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Rego Policies</div>
+              <div class="fw-meta-val green">CC6 + CC7 live</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-card">
+        <div class="fw-top">
+          <div>
+            <div class="fw-name">ISO 27001:2022</div>
+            <div class="fw-sub">Information Security Management System<br>Annex A — 93 controls</div>
+          </div>
+          <span class="pill pill-blue">Up Next</span>
+        </div>
+        <div class="fw-body">
+          <div class="fw-progress-row">
+            <span class="fw-progress-label">Automation Coverage</span>
+            <span class="fw-progress-pct">20% → 80%</span>
+          </div>
+          <div class="fw-bar"><div class="fw-bar-fill blue" style="width:20%"></div></div>
+          <div class="fw-meta-grid">
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Window</div>
+              <div class="fw-meta-val blue">Q3–Q4 2026</div>
+            </div>
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Cert Issued</div>
+              <div class="fw-meta-val">Dec 2025 · Valid 2028</div>
+            </div>
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Rego A.8</div>
+              <div class="fw-meta-val amber">In Progress</div>
+            </div>
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Drata Mappings</div>
+              <div class="fw-meta-val amber">Designing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fw-card">
+        <div class="fw-top">
+          <div>
+            <div class="fw-name">PCI DSS v4.0</div>
+            <div class="fw-sub">Payment Card Industry Data Security<br>12 Requirements · CDE scoped</div>
+          </div>
+          <span class="pill pill-green">55% Automated</span>
+        </div>
+        <div class="fw-body">
+          <div class="fw-progress-row">
+            <span class="fw-progress-label">Automation Coverage</span>
+            <span class="fw-progress-pct">55% → 90%</span>
+          </div>
+          <div class="fw-bar"><div class="fw-bar-fill" style="width:55%"></div></div>
+          <div class="fw-meta-grid">
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Window</div>
+              <div class="fw-meta-val">Q1–Q2 2027</div>
+            </div>
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">QSA</div>
+              <div class="fw-meta-val">TBD</div>
+            </div>
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Terraform</div>
+              <div class="fw-meta-val green">4 Modules Live</div>
+            </div>
+            <div class="fw-meta-item">
+              <div class="fw-meta-key">Config Rules</div>
+              <div class="fw-meta-val green">19 Active</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 ARCHITECTURE ───────────────── -->
+  <section id="architecture">
+    <div class="sh">
+      <span class="sh-tag">02</span>
+      <h2 class="sh-title">Automation <em>Architecture</em></h2>
+    </div>
+    <p class="s-desc">Five stages from code commit to customer-facing Trust Center. Each stage is tool-specific with a defined output and mandatory human review at consequential decision points.</p>
+
+    <div class="pipeline">
+      <div class="pipe-stage">
+        <div class="pipe-dot active">🏗️</div>
+        <div class="pipe-num">Stage 01</div>
+        <div class="pipe-tool">Terraform + Rego</div>
+        <div class="pipe-title">Policy as Code</div>
+        <p class="pipe-desc">Controls defined in Terraform. Rego policies enforce them at plan time and in Kubernetes admission.</p>
+        <div class="pipe-tags">
+          <span class="pt pt-x">Terraform</span>
+          <span class="pt pt-a">OPA/Rego</span>
+        </div>
+      </div>
+
+      <div class="pipe-stage">
+        <div class="pipe-dot">🔁</div>
+        <div class="pipe-num">Stage 02</div>
+        <div class="pipe-tool">GitHub Actions + Drata CaC</div>
+        <div class="pipe-title">CI Compliance Gate</div>
+        <p class="pipe-desc">Drata CaC Action + tfsec + Checkov scan every PR. Violations block merge. Rego evaluates Terraform plan JSON.</p>
+        <div class="pipe-tags">
+          <span class="pt pt-x">GitHub Actions</span>
+          <span class="pt pt-b">Drata CaC</span>
+        </div>
+      </div>
+
+      <div class="pipe-stage">
+        <div class="pipe-dot">🛡️</div>
+        <div class="pipe-num">Stage 03</div>
+        <div class="pipe-tool">Drata Enterprise</div>
+        <div class="pipe-title">Continuous Monitoring</div>
+        <p class="pipe-desc">300+ integrations. CCM runs 24/7. AI Summaries generate auditor narratives. Evidence auto-collected across all 13 Branch integrations.</p>
+        <div class="pipe-tags">
+          <span class="pt pt-b">CCM</span>
+          <span class="pt pt-g">AI Summaries</span>
+        </div>
+      </div>
+
+      <div class="pipe-stage">
+        <div class="pipe-dot">🤖</div>
+        <div class="pipe-num">Stage 04</div>
+        <div class="pipe-tool">Drata AI Agents + MCP</div>
+        <div class="pipe-title">Agentic Workflows</div>
+        <p class="pipe-desc">Agentic TPRM assesses vendors autonomously. MCP lets Claude query live Drata state. AI Questionnaire fills incoming reviews.</p>
+        <div class="pipe-tags">
+          <span class="pt pt-g">Agentic TPRM</span>
+          <span class="pt pt-g">Drata MCP</span>
+          <span class="pt pt-a">Human Review</span>
+        </div>
+      </div>
+
+      <div class="pipe-stage">
+        <div class="pipe-dot">🔐</div>
+        <div class="pipe-num">Stage 05</div>
+        <div class="pipe-tool">SafeBase Trust Center</div>
+        <div class="pipe-title">Customer Trust</div>
+        <p class="pipe-desc">security.branchapp.com syncs live from Drata. Report access requests auto-routed. Questionnaires auto-filled for human approval.</p>
+        <div class="pipe-tags">
+          <span class="pt pt-x">SafeBase</span>
+          <span class="pt pt-g">Live Sync</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout ok">
+      <span class="callout-icon">💡</span>
+      <div>
+        <strong>Drata MCP is available today</strong>
+        Drata's Model Context Protocol server lets Claude query your live control state, evidence gaps, and risk posture directly in Claude Code or Claude Projects. Connect it this week — see <code style="font-family:var(--mono);font-size:0.8em">agents/drata-mcp/README.md</code> in the repo.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03 SPRINT ─────────────────────── -->
+  <section id="sprint">
+    <div class="sh">
+      <span class="sh-tag">03</span>
+      <h2 class="sh-title">June 2026 <em>Sprint</em></h2>
+    </div>
+    <p class="s-desc">26 days · 16 tasks · SOC 2 evidence runs in parallel. Click tasks to track progress. Goal: shift to automated evidence so ISO 27001 is the last partly-manual audit.</p>
+
+    <div class="sprint-cols">
+
+      <div class="sprint-col">
+        <div class="sprint-col-header w1">
+          <div class="sprint-col-title">⚡ Week 1 — Jun 4–7</div>
+          <div class="sprint-col-dates">Drata Foundation</div>
+        </div>
+        <div class="sprint-tasks">
+          <div class="stask done" onclick="this.classList.toggle('done')">
+            <div class="stask-cb">✓</div>
+            <div class="stask-body">
+              <div class="stask-title">13 Drata integrations connected</div>
+              <div class="stask-sub">AWS · GCP · Cloudflare · Jira · GitHub · Greenhouse + 7 more</div>
+              <span class="stask-tag tag-drata">Drata</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Enable Drata CaC GitHub Action on all repos</div>
+              <div class="stask-sub">drata/compliance-as-code-action — scans Terraform for SOC2 / ISO / PCI</div>
+              <span class="stask-tag tag-drata">Drata CaC</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Sync Drata → SafeBase Trust Center</div>
+              <div class="stask-sub">security.branchapp.com reflects live control state</div>
+              <span class="stask-tag tag-sb">SafeBase</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Enable Drata AI Summaries for CCM</div>
+              <div class="stask-sub">AI-generated narratives for all control findings</div>
+              <span class="stask-tag tag-ai">AI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sprint-col">
+        <div class="sprint-col-header w2">
+          <div class="sprint-col-title">🔧 Week 2 — Jun 9–13</div>
+          <div class="sprint-col-dates">Rego Policies</div>
+        </div>
+        <div class="sprint-tasks">
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Deploy CC6 Rego policies to CI gate</div>
+              <div class="stask-sub">MFA, IAM, SG — evaluates Terraform plan JSON on every PR</div>
+              <span class="stask-tag tag-rego">OPA/Rego</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Deploy CC7 Rego policies to CI gate</div>
+              <div class="stask-sub">CloudTrail, GuardDuty, encryption, log retention</div>
+              <span class="stask-tag tag-rego">OPA/Rego</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Map Terraform resources → Drata control IDs</div>
+              <div class="stask-sub">soc2-terraform-map.json — auto-populates evidence in Drata</div>
+              <span class="stask-tag tag-drata">Drata</span>
+              <span class="stask-tag tag-tf">Terraform</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Activate Drata AI Questionnaire Assistance</div>
+              <div class="stask-sub">AI pre-fills from SafeBase — human approves before send</div>
+              <span class="stask-tag tag-ai">AI HITL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sprint-col">
+        <div class="sprint-col-header w3">
+          <div class="sprint-col-title">🤖 Week 3 — Jun 16–20</div>
+          <div class="sprint-col-dates">AI Agents</div>
+        </div>
+        <div class="sprint-tasks">
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Configure Drata Agentic TPRM for Tier 1 vendors</div>
+              <div class="stask-sub">AWS, GCP, Cloudflare, Evolve Bank — autonomous Trust Center assessment</div>
+              <span class="stask-tag tag-ai">Agentic TPRM</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Connect Drata MCP to Claude</div>
+              <div class="stask-sub">Claude Code + Claude Projects — natural-language GRC queries on live data</div>
+              <span class="stask-tag tag-ai">Drata MCP</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Automate quarterly UAR via Drata</div>
+              <div class="stask-sub">All 13 integrations — UAR requests, attestation, evidence automated</div>
+              <span class="stask-tag tag-drata">Drata UAR</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Document all HITL gates in Confluence</div>
+              <div class="stask-sub">8 gate types, approvers, SLAs, escalation paths — linked from Drata controls</div>
+              <span class="stask-tag tag-ai">HITL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sprint-col">
+        <div class="sprint-col-header w4">
+          <div class="sprint-col-title">✅ Week 4 — Jun 23–30</div>
+          <div class="sprint-col-dates">Close &amp; Measure</div>
+        </div>
+        <div class="sprint-tasks">
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Run first automated SOC 2 evidence export</div>
+              <div class="stask-sub">Target: &gt;70% auto-collected. Measure manually-uploaded vs automated</div>
+              <span class="stask-tag tag-drata">Drata</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Update coverage metrics on this dashboard</div>
+              <div class="stask-sub">Live automation % per framework, open findings, last-run timestamps</div>
+              <span class="stask-tag tag-gh">GitHub Pages</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Prioritise ISO 27001 Rego backlog for Q3</div>
+              <div class="stask-sub">Annex A OPA policies — Jira epic created, owners assigned</div>
+              <span class="stask-tag tag-rego">ISO 27001</span>
+            </div>
+          </div>
+          <div class="stask" onclick="this.classList.toggle('done')">
+            <div class="stask-cb"></div>
+            <div class="stask-body">
+              <div class="stask-title">Sprint retro — GRC Engineering Club review</div>
+              <div class="stask-sub">Review against 8 manifesto values, document gaps, share with grc.engineering community</div>
+              <span class="stask-tag tag-ai">GRC Eng</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 COVERAGE ───────────────────── -->
+  <section id="coverage">
+    <div class="sh">
+      <span class="sh-tag">04</span>
+      <h2 class="sh-title">Control Coverage <em>Matrix</em></h2>
+    </div>
+    <p class="s-desc">Automation status per control domain across all three frameworks. Auto = no human needed for evidence collection. Partial = automated collection, manual validation. Manual = still screenshot-and-upload.</p>
+
+    <table class="ctable">
+      <thead>
+        <tr>
+          <th style="width:28%">Control Domain</th>
+          <th>SOC 2</th>
+          <th>ISO 27001</th>
+          <th>PCI DSS</th>
+          <th>Tool Stack</th>
+          <th>Next Step</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="cn">Access Control / MFA</span><span class="cd">IAM, privilege, UAR, credentials</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">Drata UAR · Rego CC6</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">Enable Drata UAR workflows</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Encryption at Rest</span><span class="cd">KMS, EBS, S3, RDS encryption</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">Terraform · Config · Rego</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">Complete ✓</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Encryption in Transit</span><span class="cd">TLS 1.2+, HTTPS-only, HSTS</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">Cloudflare TF · S3 policy</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">Complete ✓</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Audit Logging</span><span class="cd">CloudTrail, GCP Audit Logs, retention</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">CloudTrail · Rego CC7</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">ISO: add VPC flow logs Rego</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Threat Detection</span><span class="cd">GuardDuty, Security Hub, alerts</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">GuardDuty · Sec Hub</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">ISO: map to A.8.16</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Change Management</span><span class="cd">PR reviews, branch protection, CI</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">GitHub · Drata CaC</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">Enable Drata CaC Action</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Vendor Risk (TPRM)</span><span class="cd">Vendor assessments, questionnaires</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><span class="chip chip-manual">✗ Manual</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">Drata Agentic TPRM</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">Configure Agentic TPRM Tier 1</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Vulnerability Management</span><span class="cd">Scanning, patching, findings</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">Security Hub · Drata</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">Add SAST/DAST to pipeline</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Policy Management</span><span class="cd">Policy library, employee attestation</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">Drata Policies · Confluence</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">Full Drata policy library activation</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Background Checks / HR</span><span class="cd">Pre-employment, offboarding</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-partial">⚡ Partial</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">Drata + Greenhouse</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">PCI: map to Req 12.7</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Risk Assessment</span><span class="cd">Risk register, treatment, scoring</span></td>
+          <td><span class="chip chip-manual">✗ Manual</span></td>
+          <td><span class="chip chip-manual">✗ Manual</span></td>
+          <td><span class="chip chip-manual">✗ Manual</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">Target: Drata Risk Module</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">Q3 2026 — activate Drata Risk</td>
+        </tr>
+        <tr>
+          <td><span class="cn">Network Security</span><span class="cd">Firewalls, WAF, SGs, segmentation</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><span class="chip chip-auto">✓ Auto</span></td>
+          <td><code style="font-size:0.62rem;font-family:var(--mono)">Terraform · Rego · Cloudflare</code></td>
+          <td style="font-size:0.68rem;color:var(--6b)">Complete ✓</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── 05 REPO ────────────────────────── -->
+  <section id="repo">
+    <div class="sh">
+      <span class="sh-tag">05</span>
+      <h2 class="sh-title">Repo <em>Structure</em></h2>
+    </div>
+    <p class="s-desc">Everything in one repository. Four top-level directories — Terraform, Rego, Agents, Drata — each with its own README, clear ownership, and CI gate. Control library, policy engine, and AI agents side-by-side.</p>
+
+    <div class="repo-grid">
+
+      <a class="repo-card" href="https://github.com/branch-app/compliance-as-code/tree/main/terraform" target="_blank">
+        <div class="repo-card-icon">🏗️</div>
+        <div class="repo-card-path">terraform/</div>
+        <div class="repo-card-title">Infrastructure Controls</div>
+        <p class="repo-card-desc">All PCI CDE infrastructure defined as code. Four provider modules. Scanned by Drata CaC Action, tfsec, and Checkov on every PR.</p>
+        <ul class="repo-card-files">
+          <li>modules/aws-pci/ — KMS, CloudTrail, GuardDuty, Config, SGs</li>
+          <li>modules/gcp-pci/ — CMEK, Audit Logs, VPC firewall, Org Policies</li>
+          <li>modules/cloudflare-pci/ — TLS 1.2+, WAF, OWASP, HSTS</li>
+          <li>modules/drata-setup/ — Cross-account IAM + GCP SA for Drata</li>
+          <li>environments/production/ — root module, tfvars.example</li>
+        </ul>
+      </a>
+
+      <a class="repo-card" href="https://github.com/branch-app/compliance-as-code/tree/main/rego" target="_blank">
+        <div class="repo-card-icon">📋</div>
+        <div class="repo-card-path">rego/</div>
+        <div class="repo-card-title">OPA/Rego Policy Engine</div>
+        <p class="repo-card-desc">Policy-as-code rules organised by framework. Evaluated against Terraform plan JSON in CI. Also deployed as Kubernetes admission controller.</p>
+        <ul class="repo-card-files">
+          <li>soc2/cc6_access_control.rego — MFA, IAM, SG policies</li>
+          <li>soc2/cc7_system_operations.rego — CloudTrail, encryption, GuardDuty</li>
+          <li>iso27001/annex_a_technology.rego — A.8 controls</li>
+          <li>pci_dss/requirements.rego — Req 1,2,3,4,6,7,8,10,11</li>
+          <li>shared/helpers.rego — common utilities, tag checks, CIDR helpers</li>
+        </ul>
+      </a>
+
+      <a class="repo-card" href="https://github.com/branch-app/compliance-as-code/tree/main/agents" target="_blank">
+        <div class="repo-card-icon">🤖</div>
+        <div class="repo-card-path">agents/</div>
+        <div class="repo-card-title">AI Agents + Prompts</div>
+        <p class="repo-card-desc">Configurations, prompts, and workflows for all AI agents. Every agent has a defined HITL gate — AI drafts, human approves before any action.</p>
+        <ul class="repo-card-files">
+          <li>drata-mcp/ — Claude MCP config, slash commands, query examples</li>
+          <li>evidence-collector/ — Control narrative prompt for auditor packages</li>
+          <li>questionnaire-assistant/ — Questionnaire response prompt + HITL rules</li>
+          <li>tprm-agent/ — Vendor risk scoring prompt + tier definitions</li>
+        </ul>
+      </a>
+
+      <a class="repo-card" href="https://github.com/branch-app/compliance-as-code/tree/main/drata" target="_blank">
+        <div class="repo-card-icon">🗺️</div>
+        <div class="repo-card-path">drata/</div>
+        <div class="repo-card-title">Drata Control Mappings</div>
+        <p class="repo-card-desc">JSON files mapping each Drata control ID to the Terraform resources, Rego policies, and Config rules that provide automated evidence. The bridge between GRC and engineering.</p>
+        <ul class="repo-card-files">
+          <li>control-mappings/soc2-terraform-map.json</li>
+          <li>control-mappings/iso27001-terraform-map.json</li>
+          <li>control-mappings/pci-terraform-map.json</li>
+          <li>hitl-gates.md — all 8 gate types, owners, SLAs</li>
+        </ul>
+      </a>
+
+      <a class="repo-card" href="https://github.com/branch-app/compliance-as-code/tree/main/.github/workflows" target="_blank">
+        <div class="repo-card-icon">⚙️</div>
+        <div class="repo-card-path">.github/workflows/</div>
+        <div class="repo-card-title">CI/CD Pipelines</div>
+        <p class="repo-card-desc">GitHub Actions workflows orchestrating the full compliance gate. PRs run all scanners. Merges trigger Terraform apply. Daily cron monitors live compliance state.</p>
+        <ul class="repo-card-files">
+          <li>compliance-pr-gate.yml — Drata CaC + tfsec + Checkov + Rego + Plan</li>
+          <li>terraform-apply.yml — OIDC auth, apply on main merge</li>
+          <li>compliance-monitor.yml — daily AWS Config + GuardDuty + Sec Hub check</li>
+        </ul>
+      </a>
+
+      <a class="repo-card" href="https://github.com/branch-app/compliance-as-code/tree/main/docs" target="_blank">
+        <div class="repo-card-icon">🌐</div>
+        <div class="repo-card-path">docs/</div>
+        <div class="repo-card-title">GitHub Pages Site</div>
+        <p class="repo-card-desc">This website. Four pages covering the full GRC programme — compliance tracker, deployment guide, GRC Engineering roadmap, and PCI dashboard. Auto-deployed on merge to main.</p>
+        <ul class="repo-card-files">
+          <li>compliance-as-code.html — this page</li>
+          <li>index.html — PCI compliance dashboard</li>
+          <li>deployment-guide.html — step-by-step setup</li>
+          <li>grc-roadmap.html — GRC Engineering Club alignment</li>
+        </ul>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── 06 HITL GATES ─────────────────── -->
+  <section id="hitl">
+    <div class="sh">
+      <span class="sh-tag">06</span>
+      <h2 class="sh-title">Human-in-the-Loop <em>Gates</em></h2>
+    </div>
+    <p class="s-desc">AI accelerates; humans govern. Every consequential output — evidence submissions, risk scores, questionnaire responses — has a defined reviewer, SLA, and escalation path. Non-negotiable.</p>
+
+    <div class="hitl-grid">
+      <div class="hitl-card crit">
+        <div class="hitl-badge">🚨 Critical</div>
+        <div class="hitl-title">Audit Evidence Submission</div>
+        <p class="hitl-desc">Drata auto-collects, AI writes narratives. Before any package goes to 360 Advanced or Wipfli — GRC Lead reviews and approves every control narrative.</p>
+        <div class="hitl-owner">Approver: <strong>GRC Lead / CISO</strong> · SLA: <strong>48h</strong></div>
+      </div>
+
+      <div class="hitl-card crit">
+        <div class="hitl-badge">🚨 Critical</div>
+        <div class="hitl-title">Risk Register Updates</div>
+        <p class="hitl-desc">AI flags new risks from GuardDuty and Drata findings. No risk is closed, accepted, or treated without explicit human sign-off in Drata by the risk owner.</p>
+        <div class="hitl-owner">Approver: <strong>Risk Owner + Sec Manager</strong> · SLA: <strong>5 business days</strong></div>
+      </div>
+
+      <div class="hitl-card rev">
+        <div class="hitl-badge">🔍 Review</div>
+        <div class="hitl-title">Questionnaire Responses</div>
+        <p class="hitl-desc">Drata AI + Claude pre-fill incoming security questionnaires from SafeBase Trust Center data. Security Analyst reviews every answer before it leaves Branch.</p>
+        <div class="hitl-owner">Approver: <strong>Security Analyst</strong> · SLA: <strong>2 business days</strong></div>
+      </div>
+
+      <div class="hitl-card rev">
+        <div class="hitl-badge">🔍 Review</div>
+        <div class="hitl-title">Vendor Risk Scoring</div>
+        <p class="hitl-desc">Drata Agentic TPRM assesses vendors autonomously. GRC Analyst reviews the agent's reasoning and evidence before accepting any score into the risk register.</p>
+        <div class="hitl-owner">Approver: <strong>GRC Analyst</strong> · SLA: <strong>3 business days</strong></div>
+      </div>
+
+      <div class="hitl-card rev">
+        <div class="hitl-badge">🔍 Review</div>
+        <div class="hitl-title">Control Exceptions</div>
+        <p class="hitl-desc">When a Rego or Config rule flags a violation that can't be immediately fixed, an exception must be reviewed, justified, and time-bound. Never silently suppressed.</p>
+        <div class="hitl-owner">Approver: <strong>Sec Manager + Control Owner</strong> · SLA: <strong>48h</strong></div>
+      </div>
+
+      <div class="hitl-card rev">
+        <div class="hitl-badge">🔍 Review</div>
+        <div class="hitl-title">Policy Attestation</div>
+        <p class="hitl-desc">Drata sends automated attestation requests. GRC Lead reviews completion rates before each audit period — incomplete attestations require escalation.</p>
+        <div class="hitl-owner">Approver: <strong>GRC Lead</strong> · SLA: <strong>Monthly review</strong></div>
+      </div>
+
+      <div class="hitl-card auto">
+        <div class="hitl-badge">✓ Auto Block</div>
+        <div class="hitl-title">CI Compliance Gate</div>
+        <p class="hitl-desc">Drata CaC + tfsec + Checkov + Rego automatically block non-compliant PRs. No human needed to block — human required to override via documented exception.</p>
+        <div class="hitl-owner">Override by: <strong>Sec Engineer + GRC Lead</strong></div>
+      </div>
+
+      <div class="hitl-card auto">
+        <div class="hitl-badge">✓ Auto Alert</div>
+        <div class="hitl-title">Control Failure Alerts</div>
+        <p class="hitl-desc">GuardDuty CRITICAL and Config NON_COMPLIANT auto-alert via SNS + Slack. Human on-call response required within SLA. CRITICAL = 2h, HIGH = 24h.</p>
+        <div class="hitl-owner">On-call: <strong>Security Engineer</strong> · CRITICAL SLA: <strong>2h</strong></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── FOOTER ────────────────────────── -->
+<div class="footer">
+  <div class="footer-left">
+    Branch Compliance as Code · June 2026 Sprint<br>
+    SOC 2 Type 2 → ISO 27001:2022 → PCI DSS v4.0 · Drata Enterprise + SafeBase
+  </div>
+  <div class="footer-links">
+    <a href="index.html">Dashboard</a>
+    <a href="deployment-guide.html">Deploy Guide</a>
+    <a href="grc-roadmap.html">GRC Roadmap</a>
+    <a href="grc-automation-program.html">Automation Programme</a>
+    <a href="https://security.branchapp.com" target="_blank">Trust Center</a>
+    <a href="https://grc.engineering" target="_blank">GRC Engineering</a>
+  </div>
+</div>
+
+<script>
+// Countdown to June 30
+function updateCountdown() {
+  const end = new Date('2026-06-30T23:59:59');
+  const now = new Date();
+  const days = Math.max(0, Math.floor((end - now) / 86400000));
+  const el = document.getElementById('days-soc2');
+  if (el) el.textContent = days;
+}
+updateCountdown();
+
+// Active nav tab on scroll
+const sections = document.querySelectorAll('section[id]');
+const tabs = document.querySelectorAll('.nav-tab[href^="#"]');
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tabs.forEach(t => t.classList.remove('active'));
+      const match = document.querySelector(`.nav-tab[href="#${e.target.id}"]`);
+      if (match) match.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>
